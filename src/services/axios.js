@@ -16,15 +16,19 @@ axios.interceptors.request.use(
         Promise.reject(error)
     });
 
-    //Add a response interceptor
+//Add a response interceptor
 axios.interceptors.response.use(response => {
     return response
- }, error => {
+}, error => {
     const originalRequest = error.config;
+    if (error.response.status === 401 && originalRequest.url ===
+        `${SERVER_URL}/auth/refresh-token`) {
+        return Promise.reject(error);
+    }
     if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         const refreshToken = LocalStorageService.getRefreshToken();
-        const {email} = LocalStorageService.getUser();
+        const { email } = LocalStorageService.getUser();
         return axios.post(`${SERVER_URL}/auth/refresh-token`,
             {
                 email,
@@ -33,12 +37,13 @@ axios.interceptors.response.use(response => {
             .then(res => {
                 if (res.status === 201) {
                     LocalStorageService.setToken(res);
+                    LocalStorageService.setToken(res.data);
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + LocalStorageService.getAccessToken();
                     return axios(originalRequest);
                 }
             })
     }
     return Promise.reject(error);
- });
+});
 
- export default axios;
+export default axios;

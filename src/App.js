@@ -13,8 +13,12 @@ function App() {
       <Navbar />
       <div className="container mt-3">
         <Switch>
-          <Route exact path={["/", "/home"]} component={Home} />
-          <Route exact path="/login" component={Login} />
+        <Route exact path="/"> 
+            {LocalStorageService.isLoggedIn() ? <Home /> : <Redirect to="/login" />}
+          </Route>
+          <Route exact path="/login"> 
+            {LocalStorageService.isLoggedIn() ? <Redirect to="/" /> : <Login /> }
+          </Route>
         </Switch>
       </div>
     </>

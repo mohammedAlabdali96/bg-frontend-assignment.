@@ -1,41 +1,26 @@
 import React, { useState, useRef } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
+import { useHistory } from "rect-router-dom";
+import authService from "../services/auth.service";
 
-
-const required = (value) => {
-    if (!value) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                This feild is required
-            </div>
-        )
-    }
-};
 
 const Login = (props) => {
-    const form = useRef();
-    const checkbtn = useRef();
+    const history = useHistory();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-
-
-    const onChangeUsername = (e) => {
-        const username = e.target.value;
-        setUsername(username);
-    };
-
-    const onChangePassword = (e) => {
-        const password = e.target.value;
-        setPassword(password);
-    };
+    const [id, serId] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const handleLogin = (e) => {
         e.preventDefault();
+
+        setLoading(true);
+        AuthService.login(id, password).then(
+            (res) => {
+                history.push("/");
+            },
+            (error) => {
+                setLoading(false);
+            }
+        )
     };
 
     return (
@@ -47,28 +32,27 @@ const Login = (props) => {
                     className="profile-img-card"
                 />
 
-                <Form onSubmit={handleLogin} ref={form}>
+                <form onSubmit={handleLogin}>
                     <div className="form-group">
-                        <label htmlFor="username">Username</label>
-                        <Input
+                        <input
                             type="text"
                             className="form-control"
-                            name="username"
-                            value={username}
-                            onChange={onChangeUsername}
-                            validations={[required]}
+                            placeholder="Colonist ID"
+                            name="id"
+                            value={id}
+                            onChange={(ev) => setId(ev.target.value)}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <Input
+                        <input
                             type="password"
                             className="form-control"
+                            placeholder="Password"
+                            required
                             name="password"
                             value={password}
-                            onChange={onChangePassword}
-                            validations={[required]}
+                            onChange={(ev) => setPassword(ev.target.value)}
                         />
                     </div>
 
@@ -81,15 +65,7 @@ const Login = (props) => {
                         </button>
                     </div>
 
-                    {message && (
-                        <div className="form-group">
-                            <div className="alert alert-danger" role="alert">
-                                {message}
-                            </div>
-                        </div>
-                    )}
-                    <CheckButton style={{ display: "none" }} ref={checkBtn} />
-                </Form>
+                </form>
             </div>
         </div>
     );
