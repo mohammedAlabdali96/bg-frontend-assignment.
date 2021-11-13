@@ -1,5 +1,18 @@
-.truncate-description {
+.truncated {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.card {
+    cursor: pointer;
+    padding: 0px;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+.card-body {
+    padding: 0px;
+}
+.card-text, .card-title {
+    font-size: 1.25em;
 }
