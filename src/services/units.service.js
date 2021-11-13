@@ -10,6 +10,15 @@ const listUnits = () => {
     });
 };
 
+const getUnit = id => {
+    return axios
+      .get(`${SERVER_URL}/units/${id}`)
+      .then(({data}) => {
+        return data;
+      });
+  };
+
 export default {
   listUnits,
+  getUnit
 };
