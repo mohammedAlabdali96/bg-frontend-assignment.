@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
+import { withRouter } from 'react-router-dom'
 
+import "../styles/navbar.css";
+import UserContext from "../contexts/UserContext";
+import LocalStorageService from "../services/localstorage.service";
 
-const Navbar = () => {
+const Navbar = props => {
+    const { user, setUser } = useContext(UserContext);
+
+    const logOut = () => {
+        LocalStorageService.clearToken();
+        props.history.push("/login");
+        setUser(null);
+    }
     return (
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <a className="navbar-brand" href="/"> BLUEGROUND</a>
+            <a className="navbar-brand" href="/">
+                Blueground on Mars
+            </a>
             <div className="navbar-nav ml-auto">
                 <li className="nav-item">
                     <span className="profile">
-                        {/* add the img */}
+                        <img
+                            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                            alt="profile-img"
+                            className="profile-img-card profile-img"
+                        />
+                        <label className="profile-name">{user && user.name}</label>
                     </span>
-                    <label className="profile-name">nma</label>
                 </li>
-                <li>
-                    <label className="logout-btn">logout</label>
+
+                <li className="nav-item">
+                    <label className="logout-btn" onClick={logOut}>Log out</label>
                 </li>
             </div>
         </nav>
     )
 }
 
-export default Navbar;
+export default withRouter(Navbar);

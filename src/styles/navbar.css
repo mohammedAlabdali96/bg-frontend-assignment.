@@ -1,0 +1,24 @@
+.profile-img {
+    width: 35px;
+    height: 35px;
+    margin: 0px;
+}
+.profile-name {
+    color: white;
+    margin-left: 5px;
+}
+.profile {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+.profile {
+    color: white;
+}
+.logout-btn {
+    color: white;
+}
+.logout-btn:hover {
+    color: lightblue;
+    cursor: pointer;
+}
