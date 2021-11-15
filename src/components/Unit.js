@@ -15,20 +15,26 @@ const Title = () => {
 const Description = () => {
     const { data, mode } = useContext(UnitContext);
     return (
-        <Card.Text
-            className={mode === UnitConstants.LIST_UNIT ? "truncated" : ""}
-        >
-            {data.description}
-        </Card.Text>
+        <>
+            {mode === UnitConstants.LIST_UNIT && <Card.Text className={"truncated"}>
+                {data.description}
+            </Card.Text>}
+
+            {mode === UnitConstants.BOOK_UNIT && <Card.Text
+                dangerouslySetInnerHTML={{ __html: data.description }}
+            />}
+        </>
     )
 }
 const Cancellation = () => {
-    const { data, mode } = useContext(UnitContext);
+    const {data, mode} = useContext(UnitContext);   
     return <Card.Text>{data.cancellation}</Card.Text>
 }
 const Price = () => {
     const { data, mode } = useContext(UnitContext);
-    return <Card.Text className="bold-text">{`${data.price} BTC`}</Card.Text>
+    return <Card.Text className={`bold-text ${mode === UnitConstants.LIST_UNIT ? "" : "highlighted"}`}>
+        {`${data.price} BTC`}
+    </Card.Text>
 }
 const Rating = () => {
     const { data, mode } = useContext(UnitContext);
@@ -45,7 +51,7 @@ const Amenities = () => {
     const baseYear = 2080;
     const { data, mode } = useContext(UnitContext);
     const amenitiesReducer = (accumulator, currentValue) => accumulator + ', ' + currentValue;
-    return <Card.Text className="availability">
+    return <Card.Text className="amenities">
         <span className="bold-text">Amenities: </span>
         {data.amenities ? data.amenities.reduce(amenitiesReducer) : ""}
     </Card.Text>
@@ -67,18 +73,41 @@ const Availability = () => {
     </Card.Text>
 }
 const Unit = ({ data, mode, clickUnit }) => {
+
+
+    const unitLayout = {
+        [UnitConstants.BOOK_UNIT]: [
+            Title,
+            Rating,
+            Description,
+            Amenities,
+            Availability,
+            Price,
+        ],
+        [UnitConstants.LIST_UNIT]: [
+            Title,
+            Description,
+            Cancellation,
+            Price,
+            Rating,
+        ],
+    }
     return (
         <UnitContext.Provider value={{ data, mode }} className={mode}>
             <Card onClick={() => clickUnit(data.id)}>
                 <Card.Img variant="top" src={"https://mars.theblueground.net/" + data.pictures[0]} />
                 <Card.Body>
-                    <Title />
+                    {/* <Title />
                     <Description />
                     <Cancellation />
                     <Price />
                     <Rating />
                     <Amenities />
-                    <Availability />
+                    <Availability /> */}
+                    {unitLayout[mode].map(sub => {
+                        const Sub = sub;
+                        return <Sub key={sub} />
+                    })}
                 </Card.Body>
             </Card>
         </UnitContext.Provider>

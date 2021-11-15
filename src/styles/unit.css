@@ -14,11 +14,22 @@
 }
 .card-body {
     padding: 0px;
+    position: relative;
 }
 .card-text, .card-title {
     font-size: 1.25em;
 }
-
+.card-text.highlighted {
+    background: black;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    color: white;
+}
+.amenities {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
 .availability button:nth-child(4n) {
     margin-right: 0px;
 }
