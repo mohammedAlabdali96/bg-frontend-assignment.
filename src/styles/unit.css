@@ -1,4 +1,25 @@
-.truncated {
+.book_unit .description::before {
+    content: "Description: ";
+    font-weight: bold;
+    font-style: italic;
+}
+.card-text.title {
+    display: flex;
+    justify-content: space-between;
+}
+.book_unit .card-text.title span:last-of-type{
+    background-color: black;
+    color: white;
+    padding: 3px;
+    text-align: center;
+}
+.list_unit .card-text.title.booked::after {
+    content: "You just booked it!";
+    font-style: italic;
+    color: red;
+    font-size: 0.5em;
+}
+.description.truncated {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -8,6 +29,9 @@
     background: none;
     border: none;
     box-shadow: none;
+}
+.card.book_unit {
+    margin: 0px;
 }
 .card.list_unit{
     cursor: pointer;
@@ -27,8 +51,6 @@
     color: white;
 }
 .amenities {
-    margin-top: 50px;
-    margin-bottom: 50px;
 }
 .availability button:nth-child(4n) {
     margin-right: 0px;

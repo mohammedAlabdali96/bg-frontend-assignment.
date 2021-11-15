@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card'
-import Carousel from 'react-bootstrap/Carousel'
 
 import "../styles/unit.css";
 import UnitContext from "../contexts/unit.context.";
@@ -10,7 +9,17 @@ import UnitConstants from "../constants/unit.constants";
 
 const Title = () => {
     const { data, mode } = useContext(UnitContext);
-    return <Card.Title className="bold-text">{`${data.name} - ${data.region}`}</Card.Title>
+    return <>
+        {mode === UnitConstants.LIST_UNIT && <Card.Text className={`bold-text title ${data.isBooked ? "booked" : ""}`}>
+            {`${data.name} - ${data.region}`}
+        </Card.Text>}
+        {mode === UnitConstants.BOOK_UNIT && <Card.Text className="bold-text title">
+            <span>{`${data.name} - ${data.region}`}</span>
+            <span>{`${data.price} BTC`}</span>
+        </Card.Text>}
+
+    </>
+
 }
 const Description = () => {
     const { data, mode } = useContext(UnitContext);
@@ -27,7 +36,7 @@ const Description = () => {
     )
 }
 const Cancellation = () => {
-    const {data, mode} = useContext(UnitContext);   
+    const { data, mode } = useContext(UnitContext);
     return <Card.Text>{data.cancellation}</Card.Text>
 }
 const Price = () => {
@@ -56,11 +65,13 @@ const Amenities = () => {
         {data.amenities ? data.amenities.reduce(amenitiesReducer) : ""}
     </Card.Text>
 }
-const Availability = () => {
+const Availability = ({ availability, setAvailability }) => {
+    console.log(Availability)
+    const baseYear = 2080;
     const { data, mode } = useContext(UnitContext);
-    const [availability, setAvailability] = useState(null);
     const arrayOfYears = data.availability ? data.availability : [];
-    return <Card.Text>
+
+    return <Card.Text className="availability">
         {[...Array(8)].map((n, i) =>
             <button
                 disabled={arrayOfYears.includes(baseYear + (i + 1))}
@@ -69,7 +80,8 @@ const Availability = () => {
                 className={baseYear + (i + 1) === availability ? "selected" : ""}
             >
                 {baseYear + (i + 1)}
-            </button>)}
+            </button>
+        )}
     </Card.Text>
 }
 const Unit = ({ data, mode, clickUnit }) => {
@@ -126,6 +138,7 @@ Unit.propTypes = {
         pictures: PropTypes.array,
         amenities: PropTypes.array,
         availability: PropTypes.array,
+        isBooked: PropTypes.bool,
     }),
     clickUnit: PropTypes.func,
     mode: PropTypes.string.isRequired,
