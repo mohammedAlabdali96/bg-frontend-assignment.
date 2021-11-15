@@ -4,8 +4,7 @@ import "../styles/login.css"
 
 
 import AuthService from "../services/auth.service";
-import LocalStorageService from "../services/localstorage.service";
-import UserContext from "../contexts/user.context.";
+import UserContext from "../contexts/user.context";
 
 const Login = props => {
     const [id, setId] = useState("");

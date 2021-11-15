@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 
 import "../styles/BookModal.css";
 import UnitsService from "../services/units.service";
-import UnitConstant from "../constants/unit.constants"
+import UnitConstants from "../constants/unit.constants";
 
 import Unit from "./Unit";
 
@@ -14,6 +14,7 @@ const BookModal = ({ id, handleCloseModal, handleBook }) => {
 
     useEffect(() => {
         setData(null);
+        setAvailability(null);
         if (id) {
             UnitsService.getUnit(id).then(
                 (data) => {
@@ -29,7 +30,7 @@ const BookModal = ({ id, handleCloseModal, handleBook }) => {
                 <Modal.Body>
                     {data && <Unit
                         data={data}
-                        mode={UnitConstant.LIST_UNIT}
+                        mode={UnitConstants.BOOK_UNIT}
                         availability={availability}
                         setAvailability={setAvailability}
                     />

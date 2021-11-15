@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card'
 
 import "../styles/unit.css";
-import UnitContext from "../contexts/unit.context.";
+import UnitContext from "../contexts/unit.context";
 import UnitConstants from "../constants/unit.constants";
 
 
@@ -36,7 +36,7 @@ const Description = () => {
     )
 }
 const Cancellation = () => {
-    const { data, mode } = useContext(UnitContext);
+    const { data } = useContext(UnitContext);
     return <Card.Text>{data.cancellation}</Card.Text>
 }
 const Price = () => {
@@ -50,7 +50,7 @@ const Rating = () => {
     return <Card.Text>
         {[...Array(5)].map((n, i) =>
             <span
-                className={`fa fa-star ${i + 1 ? "" : "checked"}`}
+                className={`fa fa-star ${i + 1 > data.rating ? "" : "checked"}`}
                 key={`rating-${i}`}
             />
         )}
@@ -66,9 +66,8 @@ const Amenities = () => {
     </Card.Text>
 }
 const Availability = ({ availability, setAvailability }) => {
-    console.log(Availability)
     const baseYear = 2080;
-    const { data, mode } = useContext(UnitContext);
+    const { data } = useContext(UnitContext);
     const arrayOfYears = data.availability ? data.availability : [];
 
     return <Card.Text className="availability">
@@ -84,26 +83,27 @@ const Availability = ({ availability, setAvailability }) => {
         )}
     </Card.Text>
 }
-const Unit = ({ data, mode, clickUnit }) => {
+const Unit = ({ data, mode, clickUnit, availability, setAvailability }) => {
 
 
     const unitLayout = {
         [UnitConstants.BOOK_UNIT]: [
-            Title,
-            Rating,
-            Description,
-            Amenities,
-            Availability,
-            Price,
+            { child: Title },
+            { child: Rating },
+            { child: Description },
+            { child: Amenities },
+            {child: Availability, childProps: {availability, setAvailability}},
         ],
         [UnitConstants.LIST_UNIT]: [
-            Title,
-            Description,
-            Cancellation,
-            Price,
-            Rating,
+            { child: Title },
+            { child: Description },
+            { child: Cancellation },
+            { child: Price },
+            { child: Rating },
         ],
     }
+    console.log(mode)
+  
     return (
         <UnitContext.Provider value={{ data, mode }} className={mode}>
             <Card onClick={() => clickUnit(data.id)}>
@@ -117,8 +117,9 @@ const Unit = ({ data, mode, clickUnit }) => {
                     <Amenities />
                     <Availability /> */}
                     {unitLayout[mode].map(sub => {
-                        const Sub = sub;
-                        return <Sub key={sub} />
+                        const Sub = sub.child;
+                        const childProps = sub.childProps ? { ...sub.childProps } : null;
+                        return <Sub key={sub.child} {...childProps} />
                     })}
                 </Card.Body>
             </Card>
@@ -145,5 +146,9 @@ Unit.propTypes = {
 }
 Unit.defaultProps = {
     clickUnit: () => void (0)
+}
+
+Availability.propTypes = {
+    setAvailability: PropTypes.func.isRequired,
 }
 export default Unit;
