@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import BookModal from "../components/BookModal";
 import LocalStorageService from "../services/localstorage.service";
 import UnitsService from "../services/units.service";
+import UnitConstants from "../constants/unit.constants";
 import Unit from "../components/Unit";
 
 const Home = () => {
@@ -41,6 +42,7 @@ const Home = () => {
             <Unit
               key={unit.id ? unit.id : i}
               data={unit}
+              mode={UnitConstants.LIST_UNIT}
             />
           </div>
         )}

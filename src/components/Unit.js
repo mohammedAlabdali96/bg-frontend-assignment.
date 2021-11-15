@@ -5,7 +5,7 @@ import Carousel from 'react-bootstrap/Carousel'
 
 import "../styles/unit.css";
 import UnitContext from "../contexts/unit.context.";
-import UnitConstant from "../constants/unit.constants";
+import UnitConstants from "../constants/unit.constants";
 
 
 const Title = () => {
@@ -16,7 +16,7 @@ const Description = () => {
     const { data, mode } = useContext(UnitContext);
     return (
         <Card.Text
-            className={mode === UnitConstant.LIST_UNIT ? "truncated" : ""}
+            className={mode === UnitConstants.LIST_UNIT ? "truncated" : ""}
         >
             {data.description}
         </Card.Text>
@@ -33,37 +33,44 @@ const Price = () => {
 const Rating = () => {
     const { data, mode } = useContext(UnitContext);
     return <Card.Text>
-        {[1, 2, 3, 4, 5].map(n =>
+        {[...Array(5)].map((n, i) =>
             <span
-                className={`fa fa-star ${n > data.rating ? "" : "checked"}`}
-                key={`rating-${n}`}
+                className={`fa fa-star ${i + 1 ? "" : "checked"}`}
+                key={`rating-${i}`}
             />
         )}
     </Card.Text>
 }
 const Amenities = () => {
+    const baseYear = 2080;
     const { data, mode } = useContext(UnitContext);
     const amenitiesReducer = (accumulator, currentValue) => accumulator + ', ' + currentValue;
-    return <Card.Text>
+    return <Card.Text className="availability">
         <span className="bold-text">Amenities: </span>
         {data.amenities ? data.amenities.reduce(amenitiesReducer) : ""}
     </Card.Text>
 }
 const Availability = () => {
-    const {data, mode} = useContext(UnitContext);
+    const { data, mode } = useContext(UnitContext);
     const [availability, setAvailability] = useState(null);
-
+    const arrayOfYears = data.availability ? data.availability : [];
     return <Card.Text>
         {[...Array(8)].map((n, i) =>
-            <span class="badge badge-secondary availability" key={`availability-${i}`}>{2081 + i}</span>
-        )}
+            <button
+                disabled={arrayOfYears.includes(baseYear + (i + 1))}
+                key={`availability-${i}`}
+                onClick={() => setAvailability(baseYear + (i + 1))}
+                className={baseYear + (i + 1) === availability ? "selected" : ""}
+            >
+                {baseYear + (i + 1)}
+            </button>)}
     </Card.Text>
 }
 const Unit = ({ data, mode, clickUnit }) => {
     return (
-        <UnitContext.Provider value={{ data, mode }}>
+        <UnitContext.Provider value={{ data, mode }} className={mode}>
             <Card onClick={() => clickUnit(data.id)}>
-            <Card.Img variant="top" src={"https://mars.theblueground.net/"+data.pictures[0]} />
+                <Card.Img variant="top" src={"https://mars.theblueground.net/" + data.pictures[0]} />
                 <Card.Body>
                     <Title />
                     <Description />
@@ -81,7 +88,6 @@ const Unit = ({ data, mode, clickUnit }) => {
 Unit.propTypes = {
     data: PropTypes.shape({
         id: PropTypes.string.isRequired,
-        mode: PropTypes.string,
         name: PropTypes.string.isRequired,
         region: PropTypes.string,
         description: PropTypes.string,
@@ -92,10 +98,10 @@ Unit.propTypes = {
         amenities: PropTypes.array,
         availability: PropTypes.array,
     }),
-    clickUnit: PropTypes.func
+    clickUnit: PropTypes.func,
+    mode: PropTypes.string.isRequired,
 }
 Unit.defaultProps = {
-    clickUnit: () => void (0),
-    mode: UnitConstant.LIST_UNIT,
+    clickUnit: () => void (0)
 }
 export default Unit;

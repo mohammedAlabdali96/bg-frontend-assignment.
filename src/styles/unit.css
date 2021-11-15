@@ -4,11 +4,13 @@
     text-overflow: ellipsis;
 }
 .card {
-    cursor: pointer;
     padding: 0px;
     background: none;
     border: none;
     box-shadow: none;
+}
+.card.list_unit{
+    cursor: pointer;
 }
 .card-body {
     padding: 0px;
@@ -17,10 +19,18 @@
     font-size: 1.25em;
 }
 
-.availability {
+.availability button:nth-child(4n) {
+    margin-right: 0px;
+}
+.availability button:nth-child(n + 5) {  
+    margin-bottom: 0px;
+}
+.availability button {
     width: calc(25% - 15px);
     margin-right: 15px;
+    margin-bottom: 15px;
 }
-.availability:nth-child(4n) {  
-    margin-right: 0px;
+.availability button.selected {
+    background: black;
+    color: white;
 }
