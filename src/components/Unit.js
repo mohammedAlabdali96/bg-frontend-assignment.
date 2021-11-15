@@ -49,6 +49,16 @@ const Amenities = () => {
         {data.amenities ? data.amenities.reduce(amenitiesReducer) : ""}
     </Card.Text>
 }
+const Availability = () => {
+    const {data, mode} = useContext(UnitContext);
+    const [availability, setAvailability] = useState(null);
+
+    return <Card.Text>
+        {[...Array(8)].map((n, i) =>
+            <span class="badge badge-secondary availability" key={`availability-${i}`}>{2081 + i}</span>
+        )}
+    </Card.Text>
+}
 const Unit = ({ data, mode, clickUnit }) => {
     return (
         <UnitContext.Provider value={{ data, mode }}>
@@ -61,6 +71,7 @@ const Unit = ({ data, mode, clickUnit }) => {
                     <Price />
                     <Rating />
                     <Amenities />
+                    <Availability />
                 </Card.Body>
             </Card>
         </UnitContext.Provider>
