@@ -15,6 +15,8 @@ const Home = () => {
   const [selectedUnit, setSelectedUnit] = useState("");
   const [bookedUnits, setBookedUnits] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [page, setPage] = useState(1);
+
 
   const handleBook = (id, availability) => {
     UnitsService.bookunit(id, availability).then(
@@ -28,18 +30,18 @@ const Home = () => {
     setSelectedUnit("");
   }
 
-  const handleLoadMore = pagenum => {
-    UnitsService.listUnits(pagenum, UNITS_PER_PAGE).then(
+  const handleLoadMore = () => {
+    UnitsService.listUnits(page, UNITS_PER_PAGE).then(
       (data) => {
         setUnits([...units, ...data.data]);
-        setHasNextPage(data.meta.totalCount > (pagenum - 1) * UNITS_PER_PAGE);
+        setHasNextPage(data.meta.totalCount > page * UNITS_PER_PAGE);
+        setPage(page + 1);
       }
     )
   }
   return (
     <>
       <InfiniteScroll
-        pageStart={1}
         loadMore={handleLoadMore}
         hasMore={hasNextPage}
       >

@@ -9,6 +9,9 @@ import Login from "./views/Login";
 import Home from "./views/Home";
 import Navbar from "./components/Navbar";
 
+import PrivateRoute from "./components/PrivateRoute";
+import AuthRoute from "./components/AuthRoute";
+
 import LocalStorageService from "./services/localstorage.service";
 
 const App = () => {
@@ -23,12 +26,8 @@ const App = () => {
       {user && <Navbar />}
       <div className="container mt-3">
         <Switch>
-          <Route exact path="/">
-            {user ? <Home /> : <Redirect to="/login" />}
-          </Route>
-          <Route exact path="/login">
-            {user ? <Redirect to="/" /> : <Login />}
-          </Route>
+          <PrivateRoute exact path="/" component={Home} />
+          <AuthRoute exact path="/login" component={Login} />
         </Switch>
       </div>
     </UserContext.Provider>

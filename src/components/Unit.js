@@ -25,7 +25,7 @@ const Description = () => {
     const { data, mode } = useContext(UnitContext);
     return (
         <>
-            {mode === UnitConstants.LIST_UNIT && <Card.Text className={"truncated"}>
+            {mode === UnitConstants.LIST_UNIT && <Card.Text className={"description truncated card-text"}>
                 {data.description}
             </Card.Text>}
 
