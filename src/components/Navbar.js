@@ -14,15 +14,15 @@ const Navbar = props => {
         setUser(null);
     }
     return (
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <nav className="navbar navbar-expand navbar-dark bg-dark d-flex justify-content-between px-md-4">
             <a className="navbar-brand" href="/">
                 Blueground on Mars
             </a>
             <div className="navbar-nav ml-auto">
                 <li className="nav-item">
-                    <span className="profile">
+                    <span className="profile px-md-4">
                         <img
-                            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                            src={user.picture}
                             alt="profile-img"
                             className="profile-img-card profile-img"
                         />
