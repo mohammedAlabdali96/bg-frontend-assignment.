@@ -13,7 +13,7 @@
     padding: 3px;
     text-align: center;
 }
-.list_unit .card-text.title.booked::after {
+.booked::after {
     content: "You just booked it!";
     font-style: italic;
     color: red;
@@ -23,6 +23,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.carousel-item > img {
+    height: 350px;
 }
 .card {
     padding: 0px;
@@ -40,17 +43,18 @@
     padding: 0px;
     position: relative;
 }
+.list_unit > .carousel {
+    border: 1px solid lightgray;
+    padding: 0.5em 1em;
+}
 .card-text, .card-title {
     font-size: 1.25em;
 }
-.card-text.highlighted {
-    background: black;
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    color: white;
+.amenities:before {
+    content: "Amenities: ";
+    font-weight: bold;
 }
-.availability button:nth-child(4n) {
+.availability button:nth-child(4n) {  
     margin-right: 0px;
 }
 .availability button:nth-child(n + 5) {  

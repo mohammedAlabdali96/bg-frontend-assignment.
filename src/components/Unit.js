@@ -9,17 +9,18 @@ import UnitConstants from "../constants/unit.constants";
 
 const Title = () => {
     const { data, mode } = useContext(UnitContext);
-    return <>
-        {mode === UnitConstants.LIST_UNIT && <Card.Text className={`bold-text title ${data.isBooked ? "booked" : ""}`}>
-            {`${data.name} - ${data.region}`}
-        </Card.Text>}
-        {mode === UnitConstants.BOOK_UNIT && <Card.Text className="bold-text title">
-            <span>{`${data.name} - ${data.region}`}</span>
-            <span>{`${data.price} BTC`}</span>
-        </Card.Text>}
+    return (
+        <>
+            {mode === UnitConstants.LIST_UNIT && <Card.Text className={`bold-text title ${data.isBooked ? "booked" : ""}`}>
+                {`${data.name} - ${data.region}`}
+            </Card.Text>}
 
-    </>
-
+            {mode === UnitConstants.BOOK_UNIT && <Card.Text className="bold-text title">
+                <span>{`${data.name} - ${data.region}`}</span>
+                <span>{`${data.price} BTC`}</span>
+            </Card.Text>}
+        </>
+    )
 }
 const Description = () => {
     const { data, mode } = useContext(UnitContext);
@@ -92,7 +93,7 @@ const Unit = ({ data, mode, clickUnit, availability, setAvailability }) => {
             { child: Rating },
             { child: Description },
             { child: Amenities },
-            {child: Availability, childProps: {availability, setAvailability}},
+            { child: Availability, childProps: { availability, setAvailability } },
         ],
         [UnitConstants.LIST_UNIT]: [
             { child: Title },
@@ -103,7 +104,7 @@ const Unit = ({ data, mode, clickUnit, availability, setAvailability }) => {
         ],
     }
     console.log(mode)
-  
+
     return (
         <UnitContext.Provider value={{ data, mode }} className={mode}>
             <Card onClick={() => clickUnit(data.id)}>
